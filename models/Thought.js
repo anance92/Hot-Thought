@@ -1,5 +1,6 @@
 const { Schema, model, Types } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
+const reactionSchema = require('./Reaction');
 
 const ThoughtSchema = new Schema({
     thoughtText : {
@@ -17,12 +18,7 @@ const ThoughtSchema = new Schema({
         type: String,
         required: 'Username is Required'
     },
-    reactions : [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Reaction'
-        }
-    ]
+    reactions : [ reactionSchema ]
 });
 
 // get total count of Reactions using Virtual
