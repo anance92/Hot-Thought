@@ -62,14 +62,32 @@ const thoughtController = {
 
     // Create reaction to a single thought
     createReaction({ params }, res) {
-
+        Thought.findOneAndUpdate({_id : params.thoughtId}, {$push: {reactions : body}}, {new : true})
+        .then(dbThoughtData => {
+          res.json(dbThoughtData);
+        })
+        .catch(err=> {
+          res.json(err);
+        })
     },
 
     // Delete reaction from a single thought
     deleteReaction({ params }, res) {
-
+        Thought.findOneAndUpdate(
+            { _id : params.thoughtId}, 
+            { $pull : { reactions } }, 
+            { runValidators: true, new: true}
+            )
+              .then(dbThoughtData => {
+                if (!dbThoughtData) {
+                  return res.status(404).json({ message: 'No Reaction to delete'});
+                }
+            res.json(dbThoughtData);
+          })
+          .catch(err=> {
+            res.json(err);
+          })
     }
-    
 };
 
 module.exports = thoughtController;
