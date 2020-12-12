@@ -61,8 +61,13 @@ const thoughtController = {
     },
 
     // Create reaction to a single thought
-    createReaction({ params }, res) {
-        Thought.findOneAndUpdate({_id : params.thoughtId}, {$push: {reactions : body}}, {new : true})
+    createReaction({ params, body }, res) {
+        console.log(params);
+        console.log(body);
+        Thought.findOneAndUpdate(
+            {_id : params.thoughtId}, 
+            {$push: { reactions : { reactionBody : body.reactionBody , username : body.username} }}, 
+            {new : true})
         .then(dbThoughtData => {
           res.json(dbThoughtData);
         })
@@ -72,10 +77,10 @@ const thoughtController = {
     },
 
     // Delete reaction from a single thought
-    deleteReaction({ params }, res) {
+    deleteReaction({ params, body }, res) {
         Thought.findOneAndUpdate(
             { _id : params.thoughtId}, 
-            { $pull : { reactions } }, 
+            { $pull : { reactions : { reactionBody : body.reactionBody } } }, 
             { runValidators: true, new: true}
             )
               .then(dbThoughtData => {

@@ -62,31 +62,48 @@ const userController = {
 
     // Add friend to user's friend list
     addFriend({ params }, res) {
-        User.findOneAndUpdate({_id : params.userId}, {$push: {friends : body}}, {new : true})
-        .then(dbUserData => {
-          res.json(dbUserData);
-        })
-        .catch(err=> {
-          res.json(err);
-        })
+        if (params.friendId) {
+            User.findOneAndUpdate(
+                {_id : params.userId}, 
+                {$push: {friends : params.friendId}}, 
+                {new : true}
+            )
+            .then(dbUserData => {
+                if (!dbUserData) {
+                    return res.status(404).json({ message: 'No Friend with that Id'});
+                  }
+              res.json(dbUserData);
+            })
+            .catch(err=> {
+              res.json(err);
+            })
+        }
+        else {
+            return res.status(500).json({ message: 'Not a valid Id'});
+        }
     },
 
     // Delete friend from user's friend list
     deleteFriend({ params }, res) {
-        User.findOneAndUpdate(
-            { _id : params.userId}, 
-            { $pull : { friends : { friendId : params.friendId } } }, 
-            { runValidators: true, new: true}
-            )
-              .then(dbUserData => {
-                if (!dbUserData) {
-                  return res.status(404).json({ message: 'No Friend with that id'});
-                }
-            res.json(dbUserData);
-          })
-          .catch(err=> {
-            res.json(err);
-          })
+        if (params.friendId) {
+            User.findOneAndUpdate(
+                { _id : params.userId}, 
+                { $pull : { friends : params.friendId  } }, 
+                { runValidators: true, new: true}
+                )
+                  .then(dbUserData => {
+                    if (!dbUserData) {
+                      return res.status(404).json({ message: 'No Friend with that Id'});
+                    }
+                res.json(dbUserData);
+              })
+              .catch(err=> {
+                res.json(err);
+              })
+        }
+        else {
+            return res.status(500).json({ message: 'Not a valid Id'});
+        }
     }
 };
 
