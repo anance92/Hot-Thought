@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 
 const UserSchema = new Schema({
     username : {
@@ -19,8 +19,19 @@ const UserSchema = new Schema({
           message: props => `${props.value} is not a valid email!`
         }
     },
-    thoughts : [],
-    friends : []
+    thoughts : [{
+        type: Schema.Types.ObjectId,
+        ref: 'Thought'
+    }],
+    friends : [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
+});
+
+// get total count of Friends using Virtual
+ThoughtSchema.virtual('friendCount').get(function() {
+    return this.friends.length;
 });
 
 // create the User model using the UserSchema
