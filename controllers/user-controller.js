@@ -58,8 +58,17 @@ const userController = {
                 res.json(dbUserData);
             })
             .catch(err => res.status(400).json(err));
-    }
+    },
 
+    // Add friend to user's friend list
+    addFriend({ params }, res) {
+
+    },
+
+    // Delete friend from user's friend list
+    deleteFriend({ params }, res) {
+        
+    }
 };
 
 module.exports = userController;

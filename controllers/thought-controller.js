@@ -58,6 +58,16 @@ const thoughtController = {
                 res.json(dbThoughtData);
             })
             .catch(err => res.status(400).json(err));
+    },
+
+    // Create reaction to a single thought
+    createReaction({ params }, res) {
+
+    },
+
+    // Delete reaction from a single thought
+    deleteReaction({ params }, res) {
+
     }
     
 };
