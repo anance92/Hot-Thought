@@ -80,7 +80,7 @@ const thoughtController = {
     deleteReaction({ params, body }, res) {
         Thought.findOneAndUpdate(
             { _id : params.thoughtId}, 
-            { $pull : { reactions : { reactionBody : body.reactionBody } } }, 
+            { $pull : { reactions : { reactionId : params.reactionId } } }, 
             { runValidators: true, new: true}
             )
               .then(dbThoughtData => {
